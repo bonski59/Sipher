@@ -1,0 +1,195 @@
+Most useful coordinates for testing
+
+"""34.411965
+-103.196675
+
+5
+
+154LJ16"""
+
+
+# todo : disable check boxes for other tech and file type
+# todo : default GSM and DECODE as checked
+# todo: remove KBKP box and calcs
+# todo: mk add survey data btn default to desktop
+todo: mk dropdown for selecting default database
+    mk option for default database to be internal to
+# todo: remove post mission
+# todo: mk lat long one line for entry
+# canx todo: account for lowercase input for GARS
+# todo: get rid of area data list on sipher display
+
+todo: write regex for dec degrees (lat long)
+todo: write process for lat lon
+
+12282020 -
+finishing note: after loading files on management page Integrity error came in play for database
+     see Sipher project notes in leather notebook
+
+
+12292020 -
+    PROGRESS
+    fully functional file management for GSM
+    DB can now ingest file entries and their properties
+        ~ do so with only selected files
+    made function that finds min and max lat/lon so db can ingest it
+        !BUG2 ~ Having issues with db ingesting float data, no errors arise when sipher_gui_functions (sgf) lines 86-119 execute but on inspection of db min/max values = 0 every time
+
+
+
+    TODO: add status bar on management treeview so user can confirm the files have been loaded to db-folder (loaded file/target file)
+    search "LEFT OFF" for where you left off
+
+12302020 -
+       PROGRESS
+       fixed !BUG2 from yesterday
+       database works for float inserts now, I just needed to delete the db and reset it all. I deleted the logs as well. I think it may have been corrupted somehow
+        ~ if issues arise with larger data management a reinstall of the program should fix things
+        ~ however sqlalchemy may not be a good enough solution for large permanent data management
+
+12312020 to 01012021 -
+    PROGRESS
+    sipher can query results and show them to the user, also expresses errors when data is not loaded
+    or no data matched in db with injected properties
+    near instantaneous results
+    NEEDS
+    need to make the returned results from query displayed on sipher page interface-able
+        ~ drog drop
+        ~ double click
+    Also need to QC database query and confirm DB files in DB match files in the DB-Folder before sipher shows results
+        ~ avoids bad data report
+
+01152021 -
+    polished pd functions
+        they now work for all dcode file types
+        dope
+    still need to polish query and db management functions.
+        TODO needs to be faster and more accurate
+        TODO delete repeated entries
+
+
+
+
+
+
+
+
+PROGRAMMING NOTES
+db.session.query(db.exists().where(db.File.root_path == "C:\\dope")).scalar()
+
+r"D:\AF\02. DOR\sipher\gti\src\sipher_terminal\database\ics_500\GSM\2017\Also a file with unknown features.txt"
+
+
+db.session.query(db.File).delete()
+
+
+print(db.session.query(db.File.root_path).first())
+print(db.session.query(db.File.root_path).all())
+
+
+x = db.session.query(db.exists().where(db.File.root_path == file).scalar())
+
+
+
+
+"""
+import db
+result = db.session.query(db.File).all()
+for row in result:
+    print(row)
+
+<db.File object at 0x04211988>
+<db.File object at 0x04211C70>
+<db.File object at 0x04211970>
+<db.File object at 0x042118E0>
+<db.File object at 0x042118B0>
+<db.File object at 0x04211820>
+<db.File object at 0x042115F8>
+<db.File object at 0x042112B0>
+<db.File object at 0x042115B0>
+<db.File object at 0x042114D8>
+<db.File object at 0x04211580>
+
+for row in result:
+    print(row.root_path)
+
+D:\AF\02. DOR\sipher\gti\src\sipher_terminal\database\ics_500\GSM\2017\Also a file with unknown features.txt
+D:\AF\02. DOR\sipher\gti\src\sipher_terminal\database\ics_500\GSM\2017\DCode_GSM_2017-11-07_14-15-42.txt
+D:\AF\02. DOR\sipher\gti\src\sipher_terminal\database\ics_500\GSM\2017\DCode_GSM_2017-11-07_14-29-09.txt
+D:\AF\02. DOR\sipher\gti\src\sipher_terminal\database\ics_500\GSM\2017\DCode_GSM_2017-11-07_15-18-34.txt
+D:\AF\02. DOR\sipher\gti\src\sipher_terminal\database\ics_500\GSM\2019\DCode_GSM_2019-04-02_16-36-01.txt
+D:\AF\02. DOR\sipher\gti\src\sipher_terminal\database\ics_500\GSM\2019\DCode_GSM_2019-04-04_09-58-15.txt
+D:\AF\02. DOR\sipher\gti\src\sipher_terminal\database\ics_500\GSM\2019\DCode_GSM_2019-04-19_08-19-10.txt
+D:\AF\02. DOR\sipher\gti\src\sipher_terminal\database\ics_500\GSM\2019\DCode_GSM_2019-04-19_09-01-22.txt
+D:\AF\02. DOR\sipher\gti\src\sipher_terminal\database\ics_500\GSM\2019\DCode_GSM_2019-04-20_11-28-18.txt
+D:\AF\02. DOR\sipher\gti\src\sipher_terminal\database\ics_500\GSM\2019\DCode_GSM_2019-04-20_12-48-41.txt
+D:\AF\02. DOR\sipher\gti\src\sipher_terminal\database\ics_500\GSM\2019\GSM_Mainline_Use_this_IDK what Year.txt
+
+"""
+
+
+# code that worked
+
+"""
+x = db.session.query(db.File.max_lat).filter(db.File.max_lat > 32.22222)
+x.all()
+[(34.434047,), (34.391197,), (34.405039,), (34.522545,), (34.405051,), (34.359835,), (36.930383,), (36.930357,), (36.848695,), (36.854608,), (34.405051,)]
+x = db.session.query(db.File.max_lat).filter(db.File.max_lat > 36.22222)
+x.all()
+[(36.930383,), (36.930357,), (36.848695,), (36.854608,)]
+x = db.session.query(db.File.root_path).filter(db.File.max_lat > 36.22222)
+x.all()
+[('D:\\AF\\02. DOR\\sipher\\gti\\src\\sipher_terminal\\database\\ics_500\\GSM\\2019\\DCode_GSM_2019-04-19_08-19-10.txt',), ('D:\\AF\\02. DOR\\sipher\\gti\\src\\sipher_terminal\\database\\ics_500\\GSM\\2019\\DCode_GSM_2019-04-19_09-01-22.txt',), ('D:\\AF\\02. DOR\\sipher\\gti\\src\\sipher_terminal\\database\\ics_500\\GSM\\2019\\DCode_GSM_2019-04-20_11-28-18.txt',), ('D:\\AF\\02. DOR\\sipher\\gti\\src\\sipher_terminal\\database\\ics_500\\GSM\\2019\\DCode_GSM_2019-04-20_12-48-41.txt',)]
+
+"""
+
+
+this should be the base of how we will iterate and display to the filetree
+"""
+q = db.session.query(db.File.name, db.File.size, db.File.tech, db.File.date, db.File.data_type, db.File.root_path).filter(db.File.min_lat <= 34.3847214+0.5)
+for row in q:
+    row = dict(zip(row.keys(), row))
+    print(row['name'])
+"""
+
+this is a way to query with an array
+"""
+q = db.session.query(db.File.name).filter(db.or_(db.File.data_type == v for v in ['DCode', 'rns']))
+print(q.all())
+[('Also a file with unknown features.txt',),
+"""
+
+
+
+presentation aid
+
+
+
+points
+
+36.846707
+-75.978054
+5
+
+34.411965
+-103.196675
+10
+
+yrs
+
+
+
+initiation folder
+
+
+
+
+
+D:\AF\02. DOR\sipher\gti\src\sipher_terminal\temp raw data storage
+
+3 GB of raw unorganized data
+34.36 sec to load correct files  from the raw data
+another 30.4 sec to load to database
+siphoned down to 371MB of GSM data (due to gsm only setting)
+
+after that access is near instant
