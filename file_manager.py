@@ -4,7 +4,7 @@ import shutil
 
 # f = r"D:\AF\02. DOR\sipher\gti\src\sipher_terminal\mess_data\dcode files\DCode_GSM_2019-04-19_09-01-22.txt"
 
-db_path = r"D:\AF\02. DOR\sipher\gti\src\sipher_terminal\database"
+db_path = r"{}.\sipher_terminal\database".format(os.getcwd())
 
 def build_file_path(file):
     path = ''

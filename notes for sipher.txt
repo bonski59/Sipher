@@ -1,26 +1,9 @@
 Most useful coordinates for testing
 
-"""34.411965
--103.196675
+34.4371503
+-103.19163
+5 nm
 
-5
-
-154LJ16"""
-
-
-# todo : disable check boxes for other tech and file type
-# todo : default GSM and DECODE as checked
-# todo: remove KBKP box and calcs
-# todo: mk add survey data btn default to desktop
-todo: mk dropdown for selecting default database
-    mk option for default database to be internal to
-# todo: remove post mission
-# todo: mk lat long one line for entry
-# canx todo: account for lowercase input for GARS
-# todo: get rid of area data list on sipher display
-
-todo: write regex for dec degrees (lat long)
-todo: write process for lat lon
 
 12282020 -
 finishing note: after loading files on management page Integrity error came in play for database

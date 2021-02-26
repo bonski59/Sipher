@@ -16,14 +16,6 @@ db_path = r"D:\AF\02. DOR\sipher\gti\src\sipher_terminal\database"
 # D:\AF\02. DOR\sipher\gti\src\sipher_terminal\temp raw data storage\GSM
 
 
-"""class progress:
-    def __init__(self, parent, length, x, y):
-        self.x = Progressbar(parent, orient='horizontal', length=length, mode='determinate')
-        self.x.place(y=y, x=x)
-
-    def add_progress(self, p_num):
-        self.x['value'] = p_num
-        gui.page_one.update_idletasks(self.x)"""
 
 def do_nothing():
     None

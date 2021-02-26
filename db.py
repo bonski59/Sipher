@@ -5,6 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, load_only
 from sqlalchemy.sql import exists, cast
 from sqlalchemy.exc import IntegrityError, OperationalError
+from sqlalchemy import inspect
 Base = declarative_base()
 
 

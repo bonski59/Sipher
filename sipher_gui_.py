@@ -334,6 +334,7 @@ class page_two(tk.Frame):
             print(q)
             print(tech)
             q_count = q.count()
+            print(q_count)
             if not db_check > 0:
                 messagebox.showerror("Error", "Please Add Files to the Database on the Manage Tab")
                 return
@@ -401,7 +402,8 @@ class page_two(tk.Frame):
                 return true_array
 
             true_tech = find_true_dict(tech)
-            print(bool(true_tech))
+            print(true_tech)
+            print("True Tech " + str(bool(true_tech)))
             true_ftypes = find_true_dict(ftype)
             if not bool(true_tech) or not bool(true_ftypes):
                 messagebox.showinfo("Info",
@@ -422,19 +424,19 @@ class page_two(tk.Frame):
         def drag_and_drop_prompt():
 
             files_arr = tree.get_children()
-            dest = os.getcwd() + "\\database\\tmp"
+            dest = r"{}\sipher_terminal\database\tmp".format(os.getcwd())
             if os.path.isdir(dest):
                 shutil.rmtree(dest)
             if not os.path.isdir(dest):
                 os.makedirs(dest)
             for i in files_arr:
                 if os.path.isfile(i):
-                   shutil.copy(os.path.normpath(i), os.path.normpath(dest + '\\' + csvex.path_leaf(i)))
+                   shutil.copy(os.path.normpath(i), os.path.normpath(r"{}\{}".format(dest, csvex.path_leaf(i))))
                 else:
                     db.session.query(db.File).filter(db.File.root_path == i).delete()
                     db.session.commit()
 
-            os.system("explorer " + '"' + dest + '"')
+            os.system("explorer {}".format(str(dest)))
 
 
         btn_copy = tk.Button(btnbox, text='Drag And Drop Files', command=drag_and_drop_prompt, bg=si_color.bg, fg=si_color.fg, state='disabled', relief='sunken')
