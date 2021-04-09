@@ -148,20 +148,6 @@ class PageTwo(tk.Frame):
         nm_ent.config(fg='grey')
         nm_ent.grid(row=5, column=0, sticky='nw')
 
-        # area in Km
-        def focus_in_Km(event):
-            remove_ent(km_ent, 'sqr. Km')
-
-        def focus_out_Km(event):
-            include_ent(km_ent, 'sqr. Km')
-
-        km_ent = tk.Entry(locbox)
-        km_ent.insert(0, 'sqr. Km')
-        km_ent.bind('<FocusIn>', focus_in_Km)
-        km_ent.bind('<FocusOut>', focus_out_Km)
-        km_ent.config(fg='grey')
-        km_ent.grid(row=5, column=1, sticky='nw')
-
         # btn box
         btnbox.columnconfigure((0, 1), weight=1)
         btnbox.rowconfigure((0, 1, 2, 3), weight=1)
@@ -220,9 +206,9 @@ class PageTwo(tk.Frame):
 
         def get_grid():  # gets DD values now
             # TODO: Delete these value inserts on release (for testing only)
-            del_then_insert(lat_ent, 34.411965)
-            del_then_insert(lon_ent, -103.196675)
-            del_then_insert(nm_ent, 10)
+            del_then_insert(lat_ent, 35.154061)
+            del_then_insert(lon_ent, -106.55)
+            del_then_insert(nm_ent, 100)
             return
 
         def sipher_btn():
@@ -257,21 +243,21 @@ class PageTwo(tk.Frame):
 
             true_tech = find_true_dict(tech)
             print(true_tech)
-            print("True Tech " + str(bool(true_tech)))
+            print("True Tech " + str(true_tech))
             true_ftypes = find_true_dict(ftype)
             if not bool(true_tech) or not bool(true_ftypes):
+                print("dope")
                 messagebox.showinfo("Info",
                                     "The Given Parameters Yield No Results \n \n Either Parameters are Incorrect \n               or \n Files with listed parameters are not available")
                 return
-            # reset_ents(tree)
+            reset_ents(tree)
             get_grid()  # TODO: remove after testing complete
 
             sipher_query(true_tech, true_ftypes, lat_ent.get(), lon_ent.get(), nm_ent.get(),
-                         # THIS IS THE SHIT RIGHT HERE
                          time_frame['oldest'], time_frame['newest'])
-
+            return
         btn_sipher = tk.Button(btnbox, text='Sipher', command=sipher_btn, bg=si_color.bg,
-                               fg=si_color.fg)  # mk command to use parameters of time, loc, type and find data
+                               fg=si_color.fg)
         btn_sipher.grid(row=0, column=0, columnspan=2, sticky='nsew')
         btn_sipher.config(width=20)
 
@@ -300,8 +286,7 @@ class PageTwo(tk.Frame):
         # noinspection PyShadowingNames
         def reset_ents(parent):
             btn_copy.config(state='disable', relief='sunken')
-            arr = [[lat_ent, 'LAT'], [lon_ent, 'LON'], [nm_ent, 'sqr. NM'],
-                   [km_ent, 'sqr. Km']]
+            arr = [[lat_ent, 'LAT'], [lon_ent, 'LON'], [nm_ent, 'sqr. NM']]
             for i in arr:
                 i[0].delete(0, "end")
                 i[0].insert(0, i[1])
@@ -342,3 +327,14 @@ class PageTwo(tk.Frame):
         # grid description window - SW corner to NE corner in DD
         grid_desc = tk.LabelFrame(locbox, bg=si_color.bg, relief='sunken')
         grid_desc.grid(row=6, column=0, columnspan=2, rowspan=4, sticky='nsew')
+
+"""
+q = db.session.query(db.File.name).filter(db.or_(db.File.tech == v for v in ['GSM']),
+                                          db.or_(db.File.data_type == v for v in ['Dcode']),
+                                          db.File.min_lat <= 34.411965 + 0.5,
+                                          db.File.max_lat >= 34.411965 - 0.5,
+                                          db.File.min_lon <= -103.196675 + 0.5,
+                                          db.File.max_lon >= -103.196675 - 0.5,
+                                          db.File.date >= 2015, 
+                                          db.File.date <= 2021)
+"""

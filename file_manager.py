@@ -28,7 +28,7 @@ def build_file_path(file):
     return path
 
 
-def move_file_accordingly(file):   # moves gsm file based on its contents to the database folder
+def move_file_accordingly(file):   # moves file based on its contents to the database folder
     dir = build_file_path(file)
     just_filename = csvex.path_leaf(file)
     if not os.path.isdir(dir):
@@ -36,6 +36,7 @@ def move_file_accordingly(file):   # moves gsm file based on its contents to the
         os.makedirs(dir)
     else:
         print(str(dir) + " exists")
+
     new_path = dir + "\\" + just_filename
     if not os.path.isfile(new_path):
         print(str(new_path) + " does not exist, renaming now")

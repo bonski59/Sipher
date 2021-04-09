@@ -23,19 +23,6 @@ tab = tab_names('SIPHER', 'MANAGE')
 si_color = color_scheme('#3a464b', 'white', '#6E7A7F', 'white', 'red', 'orange', 'yellow', 'green')
 
 
-class color_scheme:
-    def __init__(self, bg, fg, abg, pressed, warning, caution, note, complete):
-        self.bg = bg
-        self.fg = fg
-        self.abg = abg
-        self.pressed = pressed
-        self.warning = warning
-        self.caution = caution
-        self.note = note
-        self.complete = complete
-
-si_color = color_scheme('#3a464b', 'white', '#6E7A7F', 'white', 'red', 'orange', 'yellow', 'green')
-
 # custom function buttons
 class btn(tk.Button):  # add  xpos, ypos,
     def __init__(self, parent, label, command, height, width, state):
@@ -70,5 +57,3 @@ class check_box(tk.Checkbutton):
         tk.Checkbutton.__init__(self, parent, text=label, state=state, bg=si_color.abg, variable=get_bool)
         self.get_bool = get_bool
         self.grid(row=row, column=col, sticky='w')
-        """self.config(state=state)
-        self."""
