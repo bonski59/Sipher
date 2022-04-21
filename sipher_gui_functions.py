@@ -4,33 +4,22 @@ from tkinter import filedialog, messagebox
 import csv_exploit as csvex
 from file_manager import move_file_accordingly
 import db
-
+import paths
 global selected_files
 
 
 Acceptable_Technology = "GSM DCode Data"
 
-db_path = r"D:\AF\02. DOR\sipher\gti\src\sipher_terminal\database"
-
-
-# D:\AF\02. DOR\sipher\gti\src\sipher_terminal\temp raw data storage\GSM
-
-
-
-def do_nothing():
-    None
-
 
 def manage_db():
-    filedialog.askopenfiles("*", initialdir=db_path)
-
+    filedialog.askopenfiles("*", initialdir=paths.Folders.database)
 
 def add_data():
     global selected_files
     username = getpass.getuser()
+    print(username)
     # initialdir="/Users/" + username + "/Desktop"
-    folder_name = filedialog.askdirectory(initialdir="C:\\Users\\"
-                                                     + username + "\\Desktop")  # add unique cases of files
+    folder_name = filedialog.askdirectory(initialdir=r"C:/Users/{}".format(username))
     selected_files = []  # sets and resets selected_ficles global
     invalid_File_type = []
     for root, dirs, files in os.walk(folder_name):
@@ -124,36 +113,11 @@ def confirm_filepath_exists_in_db(file):  # boolean to determine f/p exists in b
     return False if not x else True
 
 
-# TODO: add loading bar functionality for this function only
-    # todo: make the send to sipher db func an individual file func
-    # this recieves the file root from the file tree
-def send_to_sipher_db(i):  #### !!!!! DO NOT USE PYTHON TERMINAL FOR DB SESSION WHILE TESTING DB !!!! ####
-    # master_db_array = []
-    # global selected_files                                               # these are the files that were initially loaded by the "Add Survey Data Button"
-    #if not len(selected_files) > 0:
-    #    messagebox.showerror("Error", "Please Select Files to load")
-    #    return
-    #try:
-    #    for i in selected_files:
-    move_file_accordingly(i)
-                                                                        # moves files to correct position in sipher db-folder according to their file properties
-    print("Printing Filepaths in database")
-    for root, dirs, files in os.walk(db_path):                      # scans through the database folder
-        for f in files:
-            print(str(f))
-            fp = os.path.join(root, f)                              # reads root file path
-            fp = os.path.normpath(fp)                               # makes windows filepath default
-            print(fp)
-
-            #if db.session.query(db.File.root_path).count() > 0:
-            #    master_db_array.append(fp)
-            #    db.session.rollback()
-            if not confirm_filepath_exists_in_db(
-                    fp):                                   # boolean compares files in db-folder to existing db entries so to avoid duplicate root paths
-                #master_db_array.append(fp)                          # appends non-existing f/p entries an array for later use
-                send_data_to_db(i)
-            else:
-                pass
+def send_to_sipher_db(fp):  #### !!!!! DO NOT USE PYTHON TERMINAL FOR DB SESSION WHILE TESTING DB !!!! ####
+    if not confirm_filepath_exists_in_db(fp):                                   # boolean compares files in db-folder to existing db entries so to avoid duplicate root paths
+        send_data_to_db(fp)
+    else:
+        return
 
     """except NameError:  # user most likely pressed "Load to Database" Button without selecting Files first
         messagebox.showerror("Error", "Please Select Files to load")
